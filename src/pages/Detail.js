@@ -1,9 +1,13 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Button } from "react-bootstrap";
 import { useParams } from "react-router-dom"
 import { Nav } from "react-bootstrap";
+import { Context1 } from "./../App.js"
 
 export default function Detail(props) {
+
+
+  let {재고} = useContext(Context1)
 
   // html 랜더링이 끝난 후 실행
 
@@ -39,6 +43,7 @@ export default function Detail(props) {
   return (
     <div className={`start ${detailFade}`}>
       {
+      
         visibility ? <div className="alert alert-warning">2초 이내 구매시 할인</div> : null
       }
       <div className="detail-box">

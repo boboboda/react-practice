@@ -1,11 +1,13 @@
 import { Button, Navbar, Nav, Container } from 'react-bootstrap';
 import './App.css';
 import data from './data.js';
-import { useState } from 'react';
-import Product from './components/product.js';
+import { createContext, useState } from 'react';
+import Product from './Components/product.js';
 import { Route, Routes, Link, useNavigate, Outlet } from 'react-router-dom';
 import Detail from './pages/Detail.js';
 import axios from 'axios';
+
+export let Context1 = createContext()
 
 function App() {
 
@@ -14,6 +16,9 @@ function App() {
   let navigate = useNavigate();
 
   let [moreCount, setMoreCount] = useState(2);
+
+  let [재고] = useState([10, 11, 12]);
+
 
 
   return (
@@ -80,7 +85,17 @@ function App() {
             }>더보기</button>
             </div></>
         } />
-        <Route path='/detail/:id' element={<Detail data={shoes}/>} />
+        <Route path='/detail/:id' element={
+      
+          <Context1.Provider value={{재고, shoes}}>
+          <Detail data={shoes}/>  
+          </Context1.Provider>
+      
+          
+        
+        
+        } 
+        />
         <Route path='/about' element={<About></About>} />
         <Route path='*' element={<div>없는페이지입니다.</div>} />
       </Routes>
