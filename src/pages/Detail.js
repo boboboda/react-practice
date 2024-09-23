@@ -3,8 +3,12 @@ import { Button } from "react-bootstrap";
 import { useParams } from "react-router-dom"
 import { Nav } from "react-bootstrap";
 import { Context1 } from "./../App.js"
+import { useDispatch, useSelector } from "react-redux";
+import { addProduct } from "../store.js";
 
 export default function Detail(props) {
+
+  let dispatch = useDispatch()
 
 
   let {재고} = useContext(Context1)
@@ -38,12 +42,15 @@ export default function Detail(props) {
     return x.id == id
   });
 
+  let product = useSelector((state) => { return state.product })
+
+  
   
 
   return (
     <div className={`start ${detailFade}`}>
+            
       {
-      
         visibility ? <div className="alert alert-warning">2초 이내 구매시 할인</div> : null
       }
       <div className="detail-box">
@@ -61,7 +68,16 @@ export default function Detail(props) {
           <h4 className="pt-5">{찾은상품.title}</h4>
           <p>{찾은상품.content}</p>
           <p>{찾은상품.price}</p>
-          <button className="btn btn-danger">주문하기</button>
+          <button className="btn btn-danger" onClick={()=>{
+
+            dispatch(addProduct({
+              id: 찾은상품.id,
+              name: 찾은상품.title,
+              count: 1
+            }))
+
+            console.log(product)
+          }}>주문하기</button>
         </div>
       </div>
 
@@ -89,7 +105,6 @@ export default function Detail(props) {
   )
 
   function TabContent({tab}){
-    console.log(tab)
 
     let [fade, setFade] = useState('');
 

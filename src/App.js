@@ -2,10 +2,11 @@ import { Button, Navbar, Nav, Container } from 'react-bootstrap';
 import './App.css';
 import data from './data.js';
 import { createContext, useState } from 'react';
-import Product from './Components/product.js';
+import Product from './components/product.js';
 import { Route, Routes, Link, useNavigate, Outlet } from 'react-router-dom';
 import Detail from './pages/Detail.js';
 import axios from 'axios';
+import Cart from './pages/Cart.js';
 
 export let Context1 = createContext()
 
@@ -36,6 +37,10 @@ function App() {
             <Nav.Link onClick={() => {
               navigate('/detail')
             }}>Detail</Nav.Link>
+
+            <Nav.Link onClick={() => {
+              navigate('/cart')
+            }}>Cart</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
@@ -52,51 +57,51 @@ function App() {
                   })
                 }
               </div>
-            <button onClick={()=>{
+              <button onClick={() => {
 
-              console.log(moreCount)
- 
-              if(moreCount < 4) {
-                axios.get(`https://codingapple1.github.io/shop/data${moreCount}.json`)
-                .then((res)=> {
-                  console.log(res.data)
-  
-                  let shoesCopy = shoes.slice()
-  
-                  shoesCopy.push(...res.data)
-  
-                  setShoes(shoesCopy);
+                console.log(moreCount)
 
-                  // Promise.all([ axios.get(), axios.get()])
-                  // .then(()=>{})
-  
-                })
-                .catch((error)=>{
-                  console.log(`fail ${error}`)
-                })
+                if (moreCount < 4) {
+                  axios.get(`https://codingapple1.github.io/shop/data${moreCount}.json`)
+                    .then((res) => {
+                      console.log(res.data)
 
-                setMoreCount(moreCount+1)
-              } else {
-                alert('더 이상 상품이 없습니다.')
+                      let shoesCopy = shoes.slice()
+
+                      shoesCopy.push(...res.data)
+
+                      setShoes(shoesCopy);
+
+                      // Promise.all([ axios.get(), axios.get()])
+                      // .then(()=>{})
+
+                    })
+                    .catch((error) => {
+                      console.log(`fail ${error}`)
+                    })
+
+                  setMoreCount(moreCount + 1)
+                } else {
+                  alert('더 이상 상품이 없습니다.')
+                }
+
+
               }
-              
-              
-            }
-            }>더보기</button>
+              }>더보기</button>
             </div></>
         } />
         <Route path='/detail/:id' element={
-      
-          <Context1.Provider value={{재고, shoes}}>
-          <Detail data={shoes}/>  
+
+          <Context1.Provider value={{ 재고, shoes }}>
+            <Detail data={shoes} />
           </Context1.Provider>
-      
-          
-        
-        
-        } 
+
+
+
+
+        }
         />
-        <Route path='/about' element={<About></About>} />
+        <Route path='/cart' element={<Cart />} />
         <Route path='*' element={<div>없는페이지입니다.</div>} />
       </Routes>
 
@@ -106,14 +111,6 @@ function App() {
   );
 }
 
-
-function About() {
-  return(
-    <div>
-      <h4>회사정보임</h4>
-    </div>
-  )
-}
 
 
 export default App;
