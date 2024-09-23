@@ -44,7 +44,15 @@ export default function Detail(props) {
 
   let product = useSelector((state) => { return state.product })
 
-  
+  useEffect(()=>{
+
+    let loadData = localStorage.getItem('watched')
+    loadData = JSON.parse(loadData)
+    loadData.push(찾은상품.id)
+    loadData =new Set(loadData)
+    loadData = Array.from(loadData)
+    localStorage.setItem('watched', JSON.stringify(loadData))
+  },[])
   
 
   return (

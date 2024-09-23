@@ -18,7 +18,7 @@ let product = createSlice({
         chnageCount(state, action) {
 
             let findProduct = state.find(function (x) {
-                return x.id == action.payload
+                return x.id === action.payload
               });
 
               findProduct.count += 1

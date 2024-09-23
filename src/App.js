@@ -1,7 +1,7 @@
 import { Button, Navbar, Nav, Container } from 'react-bootstrap';
 import './App.css';
 import data from './data.js';
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import Product from './components/product.js';
 import { Route, Routes, Link, useNavigate, Outlet } from 'react-router-dom';
 import Detail from './pages/Detail.js';
@@ -20,7 +20,25 @@ function App() {
 
   let [재고] = useState([10, 11, 12]);
 
+  let [watchedItems, setWatcedItems] = useState([]);
 
+  
+
+
+  useEffect(() => {
+    const data = localStorage.getItem('watched')
+    if (data) {
+      const watchedIds = JSON.parse(data);
+      const foundItems = shoes.filter(shoe => watchedIds.includes(shoe.id));
+
+      const watchedTitles = foundItems.map(item => item.title);
+      console.log(watchedTitles)
+
+      setWatcedItems(watchedTitles)
+    } else{
+      localStorage.setItem('watched', JSON.stringify([]))
+    }
+  },[])
 
   return (
     <div className="App">
@@ -31,6 +49,7 @@ function App() {
           <Nav className="me-auto">
             <Nav.Link onClick={() => {
               navigate('/')
+              
             }
 
             }>Home</Nav.Link>
@@ -48,8 +67,25 @@ function App() {
       <Routes>
         <Route path='/' element={
           <>
-            <div className='main-bg'></div>
-            <div className="container">
+            <div className='main-top'>
+              <div className='main-bg position-absolute'></div>
+              <div className='main-top-watched'>
+                <div className='watched-box-title'>최근 본 상품</div>
+                <div className='watched-box-content'>
+                  {watchedItems && watchedItems.length > 0 ? (
+                    watchedItems.map((item, i) => {
+                      return <div key={i} className='watched-item'>
+                        {item}
+                      </div>
+                    })
+                  ) : (
+                    <div>최근 본 상품이 없습니다.</div>
+                  )}
+
+                </div>
+              </div>
+            </div>
+            <div className="container mt-5">
               <div className="row">
                 {
                   shoes.map((v, i) => {
